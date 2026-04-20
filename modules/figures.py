@@ -8,6 +8,7 @@ Chaque fonction reçoit un DataFrame (déjà filtré) et retourne une figure Plo
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
 
 # ── Palette & thème ──────────────────────────────────────────────────────────
 
@@ -208,12 +209,17 @@ def fig_scatter_cout_duree(df: pd.DataFrame) -> go.Figure:
         color_discrete_map=COULEURS_DEPT,
         hover_data=["Age", "Maladie", "Traitement"],
         title="Coût vs Durée de séjour",
-        trendline="ols",
-        trendline_scope="overall",
-        trendline_color_override="#333333",
         labels={"DureeSejour": "Durée séjour (jours)", "Cout": "Coût (FCFA)"},
         opacity=0.7,
     )
+    m, b = np.polyfit(df["DureeSejour"], df["Cout"], 1)
+    x_line = sorted(df["DureeSejour"].unique())
+    fig.add_trace(go.Scatter(
+        x=x_line, y=[m * xi + b for xi in x_line],
+        mode="lines",
+        line=dict(color="#333333", width=1.5, dash="dot"),
+        name="Tendance", showlegend=False,
+    ))
     fig.update_layout(title_font_size=15)
     return _apply_base(fig)
 

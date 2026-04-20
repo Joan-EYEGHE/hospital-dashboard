@@ -122,9 +122,9 @@ def preprocess(path: str = DATA_PATH) -> pd.DataFrame:
 
 def apply_filters(
     df: pd.DataFrame,
-    departements: list = None,
-    sexes: list = None,
-    tranches_age: list = None
+    departements: list | None = None,
+    sexes: list | None = None,
+    tranches_age: list | None = None
 ) -> pd.DataFrame:
     """
     Filtre le DataFrame selon les sélections du dashboard.

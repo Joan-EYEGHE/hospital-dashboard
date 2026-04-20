@@ -56,6 +56,7 @@ def _navbar() -> str:
   <div class="container-fluid px-4">
     <span class="navbar-brand">🏥 Dashboard Hospitalier</span>
     <div class="navbar-nav ms-auto flex-row gap-3">
+      <a class="nav-link" href="#s0">Librairies</a>
       <a class="nav-link" href="#s1">Données</a>
       <a class="nav-link" href="#s2">EDA</a>
       <a class="nav-link" href="#s3">Visualisations</a>
@@ -71,6 +72,7 @@ def _toc() -> str:
     return '''<div class="toc-card">
   <h2>📋 Table des matières</h2>
   <ol class="mb-0">
+    <li><a href="#s0">Environnement technique &amp; librairies</a></li>
     <li><a href="#s1">Description des données</a></li>
     <li><a href="#s2">Analyse exploratoire (EDA)</a></li>
     <li><a href="#s3">Visualisations principales</a></li>
@@ -86,6 +88,60 @@ def _section_open(num: int, title: str, anchor: str) -> str:
 <div class="section-title-row">
   <span class="section-number">{num}</span>
   <h2>{title}</h2>
+</div>'''
+
+
+def _section_libs() -> str:
+    return f'''{_section_open(0, "Environnement technique &amp; librairies", "s0")}
+<p>Ce rapport a été produit avec la stack technique suivante. Chaque librairie joue un rôle précis
+dans le pipeline : collecte → traitement → visualisation → modélisation → export.</p>
+
+<div class="table-responsive">
+<table class="table table-custom">
+<thead><tr><th>Librairie</th><th>Version</th><th>Rôle dans le projet</th></tr></thead>
+<tbody>
+<tr>
+  <td><strong>Dash</strong></td><td>4.1.0</td>
+  <td>Framework web Python pour construire l'interface interactive du dashboard (callbacks, layout, routing)</td>
+</tr>
+<tr>
+  <td><strong>Plotly</strong></td><td>6.7.0</td>
+  <td>Génération de tous les graphiques interactifs (barres, scatter, camembert, courbes) via Plotly Express</td>
+</tr>
+<tr>
+  <td><strong>Pandas</strong></td><td>3.0.2</td>
+  <td>Chargement, nettoyage et transformation du dataset CSV ; calcul des KPIs et des variables dérivées</td>
+</tr>
+<tr>
+  <td><strong>scikit-learn</strong></td><td>1.8.0</td>
+  <td>Pipeline Machine Learning : prétraitement (StandardScaler, LabelEncoder), modèles (RandomForest, GradientBoosting, LogisticRegression), VotingClassifier, métriques (AUC, F1, accuracy)</td>
+</tr>
+<tr>
+  <td><strong>SciPy</strong></td><td>—</td>
+  <td>Tests statistiques : ANOVA (f_oneway) pour la durée de séjour par tranche d'âge, corrélations de Pearson</td>
+</tr>
+<tr>
+  <td><strong>dash-bootstrap-components</strong></td><td>2.x</td>
+  <td>Composants Bootstrap 5 pour le layout (grilles, cartes, badges, dropdowns) dans l'interface Dash</td>
+</tr>
+<tr>
+  <td><strong>Bootstrap</strong></td><td>5.3.2</td>
+  <td>Framework CSS utilisé dans ce rapport HTML pour la mise en page et la typographie</td>
+</tr>
+<tr>
+  <td><strong>Plotly.js</strong></td><td>3.5.0</td>
+  <td>Librairie JavaScript chargée côté navigateur pour rendre les figures Plotly dans ce rapport HTML</td>
+</tr>
+<tr>
+  <td><strong>Python</strong></td><td>3.13</td>
+  <td>Langage d'exécution de l'ensemble du pipeline (preprocessing, ML, génération du rapport)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout success"><strong>Stack orientée Data Science</strong>
+L'ensemble du projet repose exclusivement sur des librairies open-source, sans dépendance commerciale.</div>
 </div>'''
 
 
@@ -516,7 +572,7 @@ html{scroll-behavior:smooth;}
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Rapport Analytique — TP Hospitalisation</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
-<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-3.5.0.min.js"></script>
 <style>{css}</style>
 </head>
 <body>''',
@@ -524,6 +580,7 @@ html{scroll-behavior:smooth;}
         _cover(len(df), 10, date_gen),
         '<div class="main-wrapper">',
         _toc(),
+        _section_libs(),
         _section1(df, kpis),
         _section2(df, figures),
         _section3(figures),
